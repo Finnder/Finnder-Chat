@@ -1,8 +1,8 @@
 import threading
 import socket
 
-host = '71.68.40.170'
-port = 5052
+host = ''
+port = 25565
 FORMAT = 'ascii'
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -53,5 +53,6 @@ def receive():
         thread.start()
 
 
+print("--- FINNDER CHAT SERVER - 0.1 ---")
 print("Server Is Now Listening For Connections...")
 receive()

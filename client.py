@@ -3,7 +3,7 @@ import threading
 import tkinter as tk
 
 IP = '71.68.40.170'
-PORT = 5052
+PORT = 25565
 FORMAT = 'ascii'
 
 MAIN_FONT = 'Terminal'
