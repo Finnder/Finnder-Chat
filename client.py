@@ -3,7 +3,7 @@ import threading
 import tkinter as tk
 
 LOCAL_IP = socket.gethostbyname(socket.gethostname())
-IP = '71.68.40.170'
+IP = LOCAL_IP #'71.68.40.170'
 
 PORT = 25565
 FORMAT = 'ascii'
@@ -25,39 +25,11 @@ def RESET_WINDOW():
     mainFrame = tk.Frame(window, bg=backgroundColor)
     mainFrame.pack()
 
-
-def StartingWindow():
-    global window
-    global mainFrame
-    global nickname_Entry
-
-    window = tk.Tk()
-    window.geometry(f"{window_x}x{window_y}")
-    window.resizable(False, False)
-    window.configure(background=backgroundColor)
-    window.title("Finnder Chat")
-
-    mainFrame = tk.Frame(window, bg="gray10")
-    mainFrame.pack()
-
-    tk.Label(mainFrame, text=f"Successfully Connected To IP: {IP}", font=(MAIN_FONT, 19), fg='white',
-             bg='SpringGreen').pack(pady=5)
-    tk.Label(mainFrame, text="Enter A Nickname Below", font=(MAIN_FONT, 20), fg='white', bg=backgroundColor).pack(
-        pady=10)
-
-    nickname_Entry = tk.Entry(mainFrame, font=(MAIN_FONT, 22))
-    nickname_Entry.pack(pady=2)
-
-    tk.Button(mainFrame, command=MainClientWindow, text="CONFIRM", font=(MAIN_FONT, 20)).pack(pady=10)
-
-    versionLabel = tk.Label(text="Version: " + str(CurrentVersion), font=(MAIN_FONT, 15), bg=backgroundColor,fg='white').pack(pady=15)
-    window.mainloop()
-
-
 # What is sent to clients from server
 def receive():
     global mainFrame
     global messages
+    global client
 
     while True:
         try:
@@ -73,14 +45,38 @@ def receive():
             break
 
 
-# What is sent to the server from clients
-def write():
-    global userMessage
+def StartingWindow():
+    global window
+    global mainFrame
+    global nickname_Entry
     global messagebox
-    userMessage = messagebox.get()
-    message = f'{nickname}: {userMessage}'
-    client.send(message.encode(FORMAT))
 
+    def disable_event():
+        pass
+
+    window = tk.Tk()
+    window.geometry(f"{window_x}x{window_y}")
+    window.resizable(False, False)
+    window.configure(background=backgroundColor)
+    window.title("Finnder Chat")
+    window.protocol("WM_DELETE_WINDOW", disable_event)
+
+    mainFrame = tk.Frame(window, bg="gray10")
+    mainFrame.pack()
+
+    tk.Label(mainFrame, text=f"Successfully Connected To IP: {IP}", font=(MAIN_FONT, 19), fg='white',
+             bg='SpringGreen').pack(pady=5)
+    tk.Label(mainFrame, text="Enter A Nickname Below", font=(MAIN_FONT, 20), fg='white', bg=backgroundColor).pack(
+        pady=10)
+
+    nickname_Entry = tk.Entry(mainFrame, font=(MAIN_FONT, 22))
+    nickname_Entry.pack(pady=2)
+
+    tk.Button(mainFrame, command=MainClientWindow, text="CONFIRM", font=(MAIN_FONT, 20)).pack(pady=10)
+
+    versionLabel = tk.Label(text="Version: " + str(CurrentVersion), font=(MAIN_FONT, 15), bg=backgroundColor,fg='white').pack(pady=15)
+
+    window.mainloop()
 
 def MainClientWindow():
     global userMessage_var
@@ -91,6 +87,11 @@ def MainClientWindow():
     global messageArea
     global nickname
     global messages
+
+    def close_window():
+        window.destroy()
+
+    window.protocol("WM_DELETE_WINDOW", close_window)
 
     userNickname = nickname_Entry.get()
     nickname = userNickname
@@ -116,6 +117,14 @@ def MainClientWindow():
     write_thread = threading.Thread(target=write)
     write_thread.start()
 
+# What is sent to the server from clients
+def write():
+    global userMessage
+    global messagebox
+
+    userMessage = messagebox.get()
+    message = f'{nickname}: {userMessage}'
+    client.send(message.encode(FORMAT))
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect((IP, PORT))

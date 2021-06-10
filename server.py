@@ -2,7 +2,7 @@ import threading
 import socket
 
 LOCAL_IP = socket.gethostbyname(socket.gethostname())
-host = ''
+host = LOCAL_IP
 port = 25565
 FORMAT = 'ascii'
 
@@ -27,10 +27,13 @@ def handle(client):
             index = clients.index(client)
             clients.remove(client)
             client.close()
+
             nickname = nicknames[index]
             broadcast(f'{nickname} Has Left The Chat!'.encode(FORMAT))
+            print(f'{nickname} Has Left The Chat Room!')
             nicknames.remove(nickname)
             break
+
 
 
 def receive():
