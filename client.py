@@ -54,6 +54,7 @@ def StartingWindow():
 # What is sent to clients from server
 def receive():
     global mainFrame
+    global T
     while True:
         try:
             message = client.recv(1024).decode(FORMAT)
@@ -61,6 +62,7 @@ def receive():
                 client.send(nickname.encode(FORMAT))
             else:
                 tk.Label(mainFrame, text=f"{message}", bg='gray', fg='white', font=(MAIN_FONT, 12)).pack(padx=2, pady=3)
+                T.insert(mainFrame, tk.END, message)
 
         except:
             print('An Error Occurred')
@@ -84,6 +86,7 @@ def MainClientWindow():
     global nickname_Entry
     global messageArea
     global nickname
+    global T
 
     userNickname = nickname_Entry.get()
     nickname = userNickname
@@ -97,6 +100,13 @@ def MainClientWindow():
     messagebox.pack(pady=1)
     sendButton = tk.Button(mainFrame, command=write, text="Send", font=(MAIN_FONT, 20))
     sendButton.pack(pady=1)
+
+    S = tk.Scrollbar(mainFrame)
+    T = tk.Text(mainFrame, height=4, width=50)
+    S.pack(side=tk.RIGHT, fill=tk.Y)
+    T.pack(side=tk.LEFT, fill=tk.Y)
+    S.config(command=T.yview)
+    T.config(yscrollcommand=S.set)
 
     receive_thread = threading.Thread(target=receive)
     receive_thread.start()
