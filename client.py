@@ -3,7 +3,7 @@ import threading
 import tkinter as tk
 
 LOCAL_IP = socket.gethostbyname(socket.gethostname())
-IP = '71.68.40.170'
+IP = ''
 
 PORT = 25565
 FORMAT = 'ascii'
@@ -40,33 +40,38 @@ def StartingWindow():
     mainFrame = tk.Frame(window, bg="gray10")
     mainFrame.pack()
 
-    tk.Label(mainFrame, text=f"Successfully Connected To IP: {IP}", font=(MAIN_FONT, 19), fg='white', bg='SpringGreen').pack(pady=5)
-    tk.Label(mainFrame, text="Enter A Nickname Below", font=(MAIN_FONT, 20),fg='white', bg=backgroundColor).pack(pady=10)
+    tk.Label(mainFrame, text=f"Successfully Connected To IP: {IP}", font=(MAIN_FONT, 19), fg='white',
+             bg='SpringGreen').pack(pady=5)
+    tk.Label(mainFrame, text="Enter A Nickname Below", font=(MAIN_FONT, 20), fg='white', bg=backgroundColor).pack(
+        pady=10)
 
     nickname_Entry = tk.Entry(mainFrame, font=(MAIN_FONT, 22))
     nickname_Entry.pack(pady=2)
 
     tk.Button(mainFrame, command=MainClientWindow, text="CONFIRM", font=(MAIN_FONT, 20)).pack(pady=10)
 
-    versionLabel = tk.Label(text="Version: " + str(CurrentVersion), font=(MAIN_FONT, 15), bg=backgroundColor, fg='white').pack(pady=15)
+    versionLabel = tk.Label(text="Version: " + str(CurrentVersion), font=(MAIN_FONT, 15), bg=backgroundColor,fg='white').pack(pady=15)
     window.mainloop()
+
 
 # What is sent to clients from server
 def receive():
     global mainFrame
-    global T
+    global messages
+
     while True:
         try:
             message = client.recv(1024).decode(FORMAT)
             if message == 'NICK':
                 client.send(nickname.encode(FORMAT))
             else:
-                T.insert(mainFrame, tk.END, message)
+                messages.insert(tk.END, f'{message}')
 
         except:
             print('An Error Occurred')
             client.close()
             break
+
 
 # What is sent to the server from clients
 def write():
@@ -85,7 +90,7 @@ def MainClientWindow():
     global nickname_Entry
     global messageArea
     global nickname
-    global T
+    global messages
 
     userNickname = nickname_Entry.get()
     nickname = userNickname
@@ -97,15 +102,13 @@ def MainClientWindow():
     tk.Label(mainFrame, text=nicknameText, font=(MAIN_FONT, 20), bg=backgroundColor, fg='white').pack(pady=2)
     messagebox = tk.Entry(mainFrame, font=(MAIN_FONT, 20))
     messagebox.pack(pady=1)
+
     sendButton = tk.Button(mainFrame, command=write, text="Send", font=(MAIN_FONT, 20))
     sendButton.pack(pady=1)
 
-    S = tk.Scrollbar(mainFrame)
-    T = tk.Text(mainFrame, height=4, width=50)
-    S.pack(side=tk.RIGHT, fill=tk.Y)
-    T.pack(side=tk.LEFT, fill=tk.Y)
-    S.config(command=T.yview)
-    T.config(yscrollcommand=S.set)
+    # Message Box
+    messages = tk.Listbox(mainFrame, font=('Arial', 12), bg='gray')
+    messages.pack(fill=tk.BOTH, pady=3)
 
     receive_thread = threading.Thread(target=receive)
     receive_thread.start()
