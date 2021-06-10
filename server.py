@@ -2,7 +2,7 @@ import threading
 import socket
 
 LOCAL_IP = socket.gethostbyname(socket.gethostname())
-host = LOCAL_IP
+host = ''
 port = 25565
 FORMAT = 'ascii'
 
