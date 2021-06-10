@@ -1,6 +1,7 @@
 import threading
 import socket
 
+LOCAL_IP = socket.gethostbyname(socket.gethostname())
 host = ''
 port = 25565
 FORMAT = 'ascii'
@@ -11,7 +12,6 @@ server.listen()
 
 clients = []
 nicknames = []
-
 
 def broadcast(message):
     for client in clients:
@@ -47,12 +47,11 @@ def receive():
 
         print(f'Nickname Of The Client Is {nickname}!')
         broadcast(f'{nickname} Joined The Chat!'.encode(FORMAT))
-        client.send('Connected To The Server!'.encode(FORMAT))
 
         thread = threading.Thread(target=handle, args=(client,))
         thread.start()
 
 
-print("--- FINNDER CHAT SERVER - 0.1 ---")
+print("===== FINNDER CHAT SERVER (0.1) =====")
 print("Server Is Now Listening For Connections...")
 receive()

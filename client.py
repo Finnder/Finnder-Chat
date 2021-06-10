@@ -2,13 +2,18 @@ import socket
 import threading
 import tkinter as tk
 
+LOCAL_IP = socket.gethostbyname(socket.gethostname())
 IP = '71.68.40.170'
+
 PORT = 25565
 FORMAT = 'ascii'
 
 MAIN_FONT = 'Terminal'
 window_x = 700
 window_y = 500
+backgroundColor = 'gray13'
+
+CurrentVersion = 0.1
 
 
 def RESET_WINDOW():
@@ -17,7 +22,7 @@ def RESET_WINDOW():
 
     mainFrame.destroy()
     mainFrame = tk.Frame(window)
-    mainFrame = tk.Frame(window, bg="gray10")
+    mainFrame = tk.Frame(window, bg=backgroundColor)
     mainFrame.pack()
 
 
@@ -29,18 +34,21 @@ def StartingWindow():
     window = tk.Tk()
     window.geometry(f"{window_x}x{window_y}")
     window.resizable(False, False)
-    window.configure(background='gray10')
+    window.configure(background=backgroundColor)
     window.title("Finnder Chat")
 
     mainFrame = tk.Frame(window, bg="gray10")
     mainFrame.pack()
 
-    tk.Label(mainFrame, text=f"Successfully Connected To IP: {IP}", font=(MAIN_FONT, 10), fg='GREEN').pack(pady=2)
-    tk.Label(mainFrame, text="Enter A Nickname Below").pack(pady=2)
+    tk.Label(mainFrame, text=f"Successfully Connected To IP: {IP}", font=(MAIN_FONT, 19), fg='white', bg='SpringGreen').pack(pady=5)
+    tk.Label(mainFrame, text="Enter A Nickname Below", font=(MAIN_FONT, 20),fg='white', bg=backgroundColor).pack(pady=10)
 
-    nickname_Entry = tk.Entry(mainFrame, font=(MAIN_FONT, 20))
+    nickname_Entry = tk.Entry(mainFrame, font=(MAIN_FONT, 22))
     nickname_Entry.pack(pady=2)
-    tk.Button(mainFrame, command=MainClientWindow, text="CONFIRM", font=(MAIN_FONT, 20)).pack(pady=2)
+
+    tk.Button(mainFrame, command=MainClientWindow, text="CONFIRM", font=(MAIN_FONT, 20)).pack(pady=10)
+
+    versionLabel = tk.Label(text="Version: " + str(CurrentVersion), font=(MAIN_FONT, 15), bg=backgroundColor, fg='white').pack(pady=15)
     window.mainloop()
 
 # What is sent to clients from server
@@ -52,8 +60,7 @@ def receive():
             if message == 'NICK':
                 client.send(nickname.encode(FORMAT))
             else:
-                # Final Send to all clients
-                tk.Label(mainFrame, text=f"{message}").pack(padx=2, pady=1)
+                tk.Label(mainFrame, text=f"{message}", bg='gray', fg='white', font=(MAIN_FONT, 12)).pack(padx=2, pady=3)
 
         except:
             print('An Error Occurred')
@@ -85,10 +92,10 @@ def MainClientWindow():
     RESET_WINDOW()
 
     nicknameText = f"Welcome, {userNickname}!"
-    tk.Label(mainFrame, text=nicknameText, font=(MAIN_FONT, 20)).pack(pady=2)
+    tk.Label(mainFrame, text=nicknameText, font=(MAIN_FONT, 20), bg=backgroundColor, fg='white').pack(pady=2)
     messagebox = tk.Entry(mainFrame, font=(MAIN_FONT, 20))
     messagebox.pack(pady=1)
-    sendButton = tk.Button(mainFrame, command=write, text="Send Message | sc: enter", font=(MAIN_FONT, 20))
+    sendButton = tk.Button(mainFrame, command=write, text="Send", font=(MAIN_FONT, 20))
     sendButton.pack(pady=1)
 
     receive_thread = threading.Thread(target=receive)
