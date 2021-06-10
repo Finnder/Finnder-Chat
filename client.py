@@ -61,7 +61,6 @@ def receive():
             if message == 'NICK':
                 client.send(nickname.encode(FORMAT))
             else:
-                tk.Label(mainFrame, text=f"{message}", bg='gray', fg='white', font=(MAIN_FONT, 12)).pack(padx=2, pady=3)
                 T.insert(mainFrame, tk.END, message)
 
         except:
