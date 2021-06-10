@@ -3,7 +3,7 @@ import threading
 import tkinter as tk
 
 LOCAL_IP = socket.gethostbyname(socket.gethostname())
-IP = ''
+IP = '71.68.40.170'
 
 PORT = 25565
 FORMAT = 'ascii'
