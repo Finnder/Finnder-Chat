@@ -8,6 +8,8 @@ IP = '71.68.40.170'
 PORT = 25566
 FORMAT = 'ascii'
 
+nickname = ''
+
 MAIN_FONT = 'Terminal'
 window_x = 700
 window_y = 500
