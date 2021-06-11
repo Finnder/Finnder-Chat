@@ -21,6 +21,8 @@ def broadcast(message):
 
 
 def handle(client):
+    global nickname
+
     while True:
         try:
             message = client.recv(1024)
