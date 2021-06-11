@@ -14,11 +14,9 @@ server.listen()
 clients = []
 nicknames = []
 
-
 def broadcast(message):
     for client in clients:
         client.send(message)
-
 
 def handle(client):
     global nickname
@@ -38,19 +36,14 @@ def handle(client):
             nicknames.remove(nickname)
             break
 
-
 def receive():
     while True:
         client, address = server.accept()
-        print(f"Connected With {str(address)}")
+        print(f"CONNECTED IP: {str(address)}")
 
         client.send('NICK'.encode(FORMAT))
 
-        try:
-            nickname = client.recv(1024).decode(FORMAT)
-        except:
-            print("Error With Nickname")
-            continue
+        nickname = client.recv(1024).decode(FORMAT)
 
         # ADD New User To Arrays
         nicknames.append(nickname)
@@ -62,7 +55,7 @@ def receive():
         thread = threading.Thread(target=handle, args=(client,))
         thread.start()
 
-
-print("===== FINNDER CHAT SERVER (0.1) =====")
+print("=====[  FINNDER CHAT SERVER (0.1)  ]=====")
+print(' ')
 print("Server Is Now Listening For Connections...")
 receive()
