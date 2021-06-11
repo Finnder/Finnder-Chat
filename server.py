@@ -13,6 +13,7 @@ server.listen()
 clients = []
 nicknames = []
 
+
 def broadcast(message):
     for client in clients:
         client.send(message)
@@ -35,14 +36,18 @@ def handle(client):
             break
 
 
-
 def receive():
     while True:
         client, address = server.accept()
         print(f"Connected With {str(address)}")
 
         client.send('NICK'.encode(FORMAT))
-        nickname = client.recv(1024).decode(FORMAT)
+
+        try:
+            nickname = client.recv(1024).decode(FORMAT)
+        except:
+            print("Error With Nickname")
+            continue
 
         # ADD New User To Arrays
         nicknames.append(nickname)

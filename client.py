@@ -7,16 +7,13 @@ IP = '71.68.40.170'
 
 PORT = 25566
 FORMAT = 'ascii'
-
 nickname = ''
 
 MAIN_FONT = 'Terminal'
 window_x = 700
 window_y = 500
 backgroundColor = 'gray13'
-
 CurrentVersion = 0.1
-
 
 def RESET_WINDOW():
     global mainFrame
@@ -53,15 +50,11 @@ def StartingWindow():
     global nickname_Entry
     global messagebox
 
-    def disable_event():
-        pass
-
     window = tk.Tk()
     window.geometry(f"{window_x}x{window_y}")
     window.resizable(False, False)
     window.configure(background=backgroundColor)
     window.title("Finnder Chat")
-    window.protocol("WM_DELETE_WINDOW", disable_event)
 
     mainFrame = tk.Frame(window, bg="gray10")
     mainFrame.pack()
@@ -89,11 +82,6 @@ def MainClientWindow():
     global messageArea
     global nickname
     global messages
-
-    def close_window():
-        window.destroy()
-
-    window.protocol("WM_DELETE_WINDOW", close_window)
 
     userNickname = nickname_Entry.get()
     nickname = userNickname
