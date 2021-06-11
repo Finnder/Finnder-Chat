@@ -5,7 +5,7 @@ import tkinter as tk
 LOCAL_IP = socket.gethostbyname(socket.gethostname())
 IP = '71.68.40.170'
 
-PORT = 25565
+PORT = 25566
 FORMAT = 'ascii'
 
 MAIN_FONT = 'Terminal'
