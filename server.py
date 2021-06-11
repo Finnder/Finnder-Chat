@@ -5,6 +5,7 @@ LOCAL_IP = socket.gethostbyname(socket.gethostname())
 host = ''
 port = 25566
 FORMAT = 'ascii'
+nickname = ''
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((host, port))
