@@ -1,20 +1,16 @@
 # Finnder Chat
 
-## Description
-Currently only supports a local server on your own wifi
-and other clients can connect to it that are connected to your wifi.
-
-Eventually I want to move to a dedicated Public IP address for the server.
 ## Current Features
-- A nice UI... kinda
+- A Decent UI
 - Nicknames, when you load up the client it will ask you for a nickname & these will be displayed when typing a message.
+- New Dedicated Server IP to connect to
 
 ## Future Plans
 - Emojies?
 - Accounts? (SQL or Firebase Database?)
 - Mini-Games?
 - Voice Chat?
-- Better Looking UI (Tkinter has it's limitations)
+- Better Looking UI (Tkinter has its limitations)
 
 ## Imports 
 - socket (SERVER)
