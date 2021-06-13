@@ -1,10 +1,10 @@
 import socket
 import threading
 import tkinter as tk
-import vidstream
+#import vidstream
 
 LOCAL_IP = socket.gethostbyname(socket.gethostname())
-IP = LOCAL_IP #'71.68.40.170'
+IP = '71.68.40.170'
 
 PORT = 25566
 FORMAT = 'ascii'
@@ -197,43 +197,43 @@ def VoiceWindow():
 
 
     # Audio Server
-    audio_receiver = vidstream.AudioReceiver(IP, PORT)
+    audio_receiver = vidstream.AudioReceiver(LOCAL_IP, 6666)
 
     # Start Listening To Audio
-    def StartAudioListening():
-        t1 = threading.Thread(target=audio_receiver.start_server)
-        t1.start()
+    # def StartAudioListening():
+    #     t1 = threading.Thread(target=audio_receiver.start_server)
+    #     t1.start()
+    #
+    # def StartAudioSending():
+    #     audio_sender = vidstream.AudioSender(IP, PORT)
+    #     t3 = threading.Thread(target=audio_sender.start_stream)
+    #     t3.start()
 
-    def StartAudioSending():
-        audio_sender = vidstream.AudioSender(IP, PORT)
-        t3 = threading.Thread(target=audio_sender.start_stream)
-        t3.start()
-
-    def JOINCALL():
-        print("Joined Call")
-        StartAudioListening()
-        StartAudioSending()
+    # def JOINCALL():
+    #     print("Joined Call")
+    #     StartAudioListening()
+    #     StartAudioSending()
 
 
-    def LEAVECALL():
-        joinCallButton.config(text="JOIN CALL", fg='white', bg='green')
-        joinCallButton.pack()
+    # def LEAVECALL():
+    #     joinCallButton.config(text="JOIN CALL", fg='white', bg='green')
+    #     joinCallButton.pack()
 
     # Deafen or Going off audio section
-    def StopAudioListening():
-        pass
+    # def StopAudioListening():
+    #     pass
+    #
+    # def MuteMic():
+    #     pass
 
-    def MuteMic():
-        pass
-
-    tk.Label(mainFrame, text="Welcome To Voice Chat!", font=(MAIN_FONT, 30), bg=backgroundColor, fg='white').pack()
-
-    audioOptionsArea = tk.Frame(mainFrame, bg='gray10')
-    audioOptionsArea.pack(anchor=tk.CENTER)
-
-    joinCallButton = tk.Button(mainFrame, text="JOIN CALL", command=JOINCALL, font=(MAIN_FONT, 12), bg='green', fg='white').pack(in_=audioOptionsArea)
-    tk.Button(mainFrame, text="Mute", font=(MAIN_FONT, 10)).pack(in_=audioOptionsArea)
-    tk.Button(mainFrame, text="Deafen", font=(MAIN_FONT, 10)).pack(in_=audioOptionsArea)
+    # tk.Label(mainFrame, text="Welcome To Voice Chat!", font=(MAIN_FONT, 30), bg=backgroundColor, fg='white').pack()
+    #
+    # audioOptionsArea = tk.Frame(mainFrame, bg='gray10')
+    # audioOptionsArea.pack(anchor=tk.CENTER)
+    #
+    # joinCallButton = tk.Button(mainFrame, text="JOIN CALL", command=JOINCALL, font=(MAIN_FONT, 12), bg='green', fg='white').pack(in_=audioOptionsArea)
+    # tk.Button(mainFrame, text="Mute", font=(MAIN_FONT, 10)).pack(in_=audioOptionsArea)
+    # tk.Button(mainFrame, text="Deafen", font=(MAIN_FONT, 10)).pack(in_=audioOptionsArea)
 
 # What is sent to the server from clients
 def write():

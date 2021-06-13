@@ -1,6 +1,6 @@
 import threading
 import socket
-import vidstream
+#import vidstream
 
 LOCAL_IP = socket.gethostbyname(socket.gethostname())
 host = ''
