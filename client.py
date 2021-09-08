@@ -1,23 +1,26 @@
 import socket
 import threading
 import tkinter as tk
-#import vidstream
+import RPG
 
 LOCAL_IP = socket.gethostbyname(socket.gethostname())
-IP = '71.68.40.170'
+IP = LOCAL_IP
 
 PORT = 25566
 FORMAT = 'ascii'
 nickname = ''
 
 MAIN_FONT = 'Terminal'
-window_x = 700
-window_y = 500
+window_x = 800
+window_y = 600
 backgroundColor = 'gray13'
 CurrentVersion = 0.1
 
 # Checks If Your In A Specific Tab
-inMessages = False
+startupTab = 'start'
+rpgTab = 'rpg'
+messagesTab = 'messages'
+currentTab = ''
 
 # Resets Window
 def RESET_WINDOW():
@@ -55,6 +58,9 @@ def StartingWindow():
     global mainFrame
     global nickname_Entry
     global messagebox
+    global currentTab
+
+    currentTab = startupTab
 
     window = tk.Tk()
     window.geometry(f"{window_x}x{window_y}")
@@ -103,9 +109,11 @@ def StartingWindow():
 
 def AreaSelectionWindow():
     global window
+    global currentTab
+
     SetUserNickname()
     RESET_WINDOW()
-
+    currentTab = 'None'
     # Look For Enter Keys - Area Selections
     def OnEnterPressed(event):
         pass
@@ -119,12 +127,13 @@ def AreaSelectionWindow():
 
     tk.Label(text="Sections", font=(MAIN_FONT, 15), bg=backgroundColor, fg='white').pack(in_=ButtonSelection_TOP, side=tk.TOP, pady=2)
     tk.Button(text="MESSAGING", command=LoadMessageWindow, font=(MAIN_FONT, 15), width=16, height=1).pack(in_=ButtonSelection_TOP, side=tk.LEFT, padx=4, pady=2)
-    tk.Button(text="NUMBER THINGY", command=NumberWindow, font=(MAIN_FONT, 15), width=16, height=1).pack(in_=ButtonSelection_TOP, side=tk.LEFT, padx=4, pady=2)
+    tk.Button(text="FINNDERS RPG", command=RPGWindow, font=(MAIN_FONT, 15), width=16, height=1).pack(in_=ButtonSelection_TOP, side=tk.LEFT, padx=4, pady=2)
     tk.Button(text="VOICE CHAT (WIP)", command=VoiceWindow, font=(MAIN_FONT, 15), width=16, height=1).pack(in_=ButtonSelection_TOP, side=tk.LEFT, padx=2, pady=2)
 
 def SetUserNickname():
     global nickname
     global userNickname
+
     userNickname = nickname_Entry.get()
     nickname = userNickname
 
@@ -148,6 +157,9 @@ def MessageWindow():
     global nickname
     global messages
     global inMessages
+    global currentTab
+
+    currentTab = messagesTab
 
     # Look For Enter Keys - Message Window
     def OnEnterPressed(event):
@@ -189,51 +201,30 @@ def MessageWindow():
     write_thread = threading.Thread(target=write)
     write_thread.start()
 
-def NumberWindow():
+def RPGWindow():
+    global currentTab
+
     RESET_WINDOW()
+    currentTab = rpgTab
+
+    # Setting up the textbox and stats
+    textBox = tk.Listbox(mainFrame, font=('Arial', 11), bg='gray10', fg='white',  width=60, height=12)
+    statsBox = tk.Listbox(mainFrame, font=('Arial', 9), bg='gray10', fg='white', width=30, height=12)
+    textBox.pack(fill=tk.BOTH, side=tk.LEFT, pady=3)
+    statsBox.pack(fill=tk.BOTH, side=tk.RIGHT, pady=3, padx=2)
+    textBox.configure(justify=tk.CENTER)
+    statsBox.configure(justify=tk.CENTER)
+
+    RPG.sendMSG(statsBox, 'Your stats & items will be shown here', 'grey')
+    RPG.Menu(textBox)
+
+    def OnEnterPressed(event):
+        print('Enter Pressed')
+
+    window.bind('<Return>', OnEnterPressed)
 
 def VoiceWindow():
     RESET_WINDOW()
-
-
-    # Audio Server
-    audio_receiver = vidstream.AudioReceiver(LOCAL_IP, 6666)
-
-    # Start Listening To Audio
-    # def StartAudioListening():
-    #     t1 = threading.Thread(target=audio_receiver.start_server)
-    #     t1.start()
-    #
-    # def StartAudioSending():
-    #     audio_sender = vidstream.AudioSender(IP, PORT)
-    #     t3 = threading.Thread(target=audio_sender.start_stream)
-    #     t3.start()
-
-    # def JOINCALL():
-    #     print("Joined Call")
-    #     StartAudioListening()
-    #     StartAudioSending()
-
-
-    # def LEAVECALL():
-    #     joinCallButton.config(text="JOIN CALL", fg='white', bg='green')
-    #     joinCallButton.pack()
-
-    # Deafen or Going off audio section
-    # def StopAudioListening():
-    #     pass
-    #
-    # def MuteMic():
-    #     pass
-
-    # tk.Label(mainFrame, text="Welcome To Voice Chat!", font=(MAIN_FONT, 30), bg=backgroundColor, fg='white').pack()
-    #
-    # audioOptionsArea = tk.Frame(mainFrame, bg='gray10')
-    # audioOptionsArea.pack(anchor=tk.CENTER)
-    #
-    # joinCallButton = tk.Button(mainFrame, text="JOIN CALL", command=JOINCALL, font=(MAIN_FONT, 12), bg='green', fg='white').pack(in_=audioOptionsArea)
-    # tk.Button(mainFrame, text="Mute", font=(MAIN_FONT, 10)).pack(in_=audioOptionsArea)
-    # tk.Button(mainFrame, text="Deafen", font=(MAIN_FONT, 10)).pack(in_=audioOptionsArea)
 
 # What is sent to the server from clients
 def write():

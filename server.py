@@ -3,7 +3,7 @@ import socket
 #import vidstream
 
 LOCAL_IP = socket.gethostbyname(socket.gethostname())
-host = ''
+host = LOCAL_IP
 port = 25566
 FORMAT = 'ascii'
 nickname = ''
